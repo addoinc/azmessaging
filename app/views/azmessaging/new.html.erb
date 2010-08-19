@@ -1,0 +1,51 @@
+<div class="page">
+  <h2>Create a new Message</h2>
+  <div id="user" class="form-elements">
+    <fieldset class="inlineLabels" style="padding:0px;">
+      <%= error_messages_for :message %>
+      <% form_for :message, :html => {:class=> "message_new"}, :url => messages_path do |f| -%>
+        <div class="ctrlHolder element">
+          <div class="label"><%= label_tag 'from' %></div>
+          <div class="content">
+            <%= select_tag(:author_id, options_from_collection_for_select(current_user.users.on_server(current_server).sort_by(&:name), :id, :name, current_user ? current_user.id : 0), :class => "selectbox") %>
+          </div>
+        </div>
+
+        <div class="ctrlHolder element">
+          <% if @recipient_user.nil? -%>
+            <div class="label"> <%= label_tag 'User' %></div>
+            <div class="content">
+              <%= text_field_tag "user_populator" %>
+              <%= hidden_field :message, :to_users %>
+            </div>
+            <div class="user_error"></div>
+          <% else -%>
+            <% if @recipient -%>
+              <div class="label"><%= label_tag 'to' %></div>
+              <div class="content"><%= @recipient.name %></div>
+            <% end -%>
+            <%= hidden_field :message, :to_users, :value => @recipient_user %>
+          <% end -%>
+        </div>
+
+        <div class="ctrlHolder element">
+          <div class="label"><%= label_tag 'subject' %></div>
+          <div class="content"><%= f.text_field :subject %></div>
+        </div>
+
+        <div class="ctrlHolder element">
+          <div class="label"> <%= label_tag 'Body' %></div>
+          <div class="content">
+            <%= f.text_area :body, :rows => 5, :columns => 20 %>
+            <%= f.hidden_field :msg_type %>
+            <%= f.hidden_field :msg_id %>
+          </div>
+        </div>
+
+        <div class="content"> <%= submit_tag 'Send',:class=>"submit" %> &nbsp;
+          <%= link_to 'Back', messages_path, :confirm => "Are you sure? The message will be lost!",:class=>"submit" %>
+        </div>
+      <% end -%>
+    </fieldset>
+  </div>
+</div>

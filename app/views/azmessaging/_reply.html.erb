@@ -1,0 +1,24 @@
+<div class="show_message_thread"><h3>  Reply To Message</h3></div>
+<div id="message" class="form-elements">
+<%= error_messages_for :message %>
+<% form_for :message, :url => {:action => "reply", :controller => "messages"} do |f| -%>
+<fieldset class="inlineLabels" style="padding:0px;">
+  <div class="ctrlHolder element">
+    <div class="label"><%= label_tag 'subject' %></div>
+    <div class="content"><%= f.text_field :subject %></div>
+   </div> 
+  <div class="ctrlHolder element">  
+    <div class="label"><%= label_tag 'Message Body' %></div>
+    <div class="content">
+      <%= f.text_area :body, :class => "mceEditor" ,:rows=>5,:columns=>20%>
+      
+      <%= f.hidden_field :to_users, :value=> get_recipient_id(message) %>
+      <%= hidden_field_tag "parent_msg", @parent_message_id %>
+    </div>  
+   </div> 
+  <div class="content"> 
+   <%= submit_tag 'Reply',:class=>"submit" %>
+ </div> 
+<% end -%>
+</fieldset>
+</div>

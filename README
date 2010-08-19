@@ -1,0 +1,14 @@
+======== AzMessaging - An inter-user messaging engine for Rails 3 ============
+
+-------- WARNING ---->>>> CURRENTLY UNDER ACTIVE DEVELOPEMNT <<<<-------
+
+1. Requires the following plugins:
+  a) acts_as_nested_set
+  b) AASM
+
+2. Description: 
+
+-------- WARNING ---->>>> CURRENTLY UNDER ACTIVE DEVELOPEMNT <<<<-------
+
+
+-- Being Developed by Azri --

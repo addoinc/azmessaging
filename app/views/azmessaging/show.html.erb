@@ -1,0 +1,17 @@
+<div class="page" id="results">
+
+<% content_for :head do %>
+  <script>
+    var AUTH = "<%= form_authenticity_token %>";
+  </script>
+<% end %>
+<% item_name = Item.find_by_id(@thread.first.message.msg_id).name if @thread.first.message.msg_type == "Item"%>
+<h2>Message thread <%= " - "+item_name.to_s %></h2>
+<% for message in @thread %>  <br />
+<div class="message_box <%=cycle('','alt') %>" id="message_<%=message.id%>">
+  <%= render :partial => "message", :locals => { :message => message } %>
+</div>
+<% end %>
+<br/>
+<%= render :partial => "reply", :locals => { :message => message } %>
+</div>

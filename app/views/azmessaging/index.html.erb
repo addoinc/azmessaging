@@ -1,0 +1,47 @@
+<div class="page" id="results">
+<h2>Messages</h2>
+
+<div id="options_bar">
+    
+<h3>
+  <%= link_to("Inbox", messages_path + "?folder=inbox", :class=> @inbox_design) %> &nbsp;
+  <%= link_to("Outbox", messages_path + "?folder=outbox",:class=> @outbox_design) %> &nbsp;
+</h3>
+</div>
+
+<div class="item_results">
+  <table id="item-results">
+    <thead>
+    <tr>
+      <th>Sender</th>
+      <th>Recipient</th>
+      <th>Subject</th>
+      <th><%= sortable_column('received', @order[:received]) %></th>
+      <th><%= sortable_column('status', @order[:status] || 'desc') %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <% for message in @messages %>
+    <tr class="<%=cycle('','alt') %>">
+      <td><%=h message.author.name %></td>
+      <td><%=h message.cached_recipients %></td>
+      <td><%=h message.subject %></td>
+      <td><%=h time_ago(message.created_at) %></td>
+      <td><%=h message.status.capitalize! %> </td>
+      <td><%= link_to 'Show', url_for(:action => "show", :id => message.id) %></td>
+    </tr>
+    <% end %>
+    <tr>
+      <th colspan="5">
+	<%= will_paginate @messages %>     
+      </th>
+    </tr>
+  </table>
+  
+</div>
+
+<%= link_to 'New Message', messages_path+'/new' %>
+</div>
+
+
+

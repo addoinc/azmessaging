@@ -1,0 +1,9 @@
+<%=h @user.name %>, you have new message.
+
+Subject: <%=@message.subject%>
+
+<%=@message.body%>
+
+please click on link to view the message
+
+<%= message_url(@message.message_category(@message.id).to_s) %>
