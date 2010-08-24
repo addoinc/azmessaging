@@ -19,18 +19,16 @@ class Message < ActiveRecord::Base
   attr_accessor :parent_msg,:to_users
   attr_accessible :subject, :body, :parent_msg, :to_users, :msg_type, :msg_id
   validates_presence_of :subject
-
-
+  
   validates_each :to_users do
     |record,attr,value|
     not_found = []
     value.split( /\s*,\s*/ ).each do
       |recipient|
-    not_found.push(recipient) if User.exists?(['id = ?', recipient]) != false
+      not_found.push(recipient) if User.exists?(['id = ?', recipient]) != false
+    end
+    record.errors.add attr, "Recipient(s) not found : " + not_found.join(", ") if not_found.empty? 
   end
-  record.errors.add attr, "Recipient(s) not found : " + not_found.join(", ") if not_found.empty? 
- end
-  
   
   def copy_recipients
     ## Using find_by_sql for union operation, in order to aviod duplicate rows with a single query users
@@ -49,14 +47,12 @@ class Message < ActiveRecord::Base
     end
   end
   
-  
   def store_in_outbox_or_recur
     return if author.nil?
     message_copies.build(
       :folder_id => author.outbox.id
-      )
+    )
   end
-
   
   def recipients
     # :include wipes out the :select, hence egar loading with :include selects everything from 
